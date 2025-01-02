@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - PCS Infragold</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #00cec9);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .logo {
+            width: 100px;
+        }
+        nav {
+            margin-right: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .search-container {
+            margin-top: 100px;
+            text-align: center;
+        }
+        .search-container input {
+            padding: 10px;
+            font-size: 18px;
+            width: 300px;
+            border: none;
+            border-radius: 5px;
+        }
+        .search-container button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #0984e3;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .search-container button:hover {
+            background-color: #74b9ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="PCS Infragold Logo" class="logo">
+        <nav>
+            <a href="#" onclick="viewInventory()">Inventory</a>
+        </nav>
+    </header>
+    <div class="search-container">
+        <h1>Search Products</h1>
+        <input type="text" id="categoryCode" placeholder="Enter Category Code">
+        <button onclick="searchProduct()">Search</button>
+    </div>
+
+    <script>
+        function viewInventory() {
+            window.location.href = "all-items.html"; // Redirects to the inventory listing page
+        }
+
+        function searchProduct() {
+            const categoryCode = document.getElementById("categoryCode").value;
+            if (categoryCode.trim() === "") {
+                alert("Please enter a category code.");
+                return;
+            }
+            // Pass the category code to the product details page via query string
+            window.location.href = `product-details.html?category=${categoryCode}`;
+        }
+    </script>
+</body>
+</html>
