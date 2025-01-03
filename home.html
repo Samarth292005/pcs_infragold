@@ -28,70 +28,85 @@
         .logo {
             width: 100px;
         }
-        nav {
-            margin-right: 20px;
-        }
-        nav a {
+        .inventory-btn {
+            padding: 10px 20px;
+            background-color: #0984e3;
             color: white;
-            text-decoration: none;
-            font-size: 18px;
-            margin-left: 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
         }
-        nav a:hover {
-            text-decoration: underline;
+        .inventory-btn:hover {
+            background-color: #74b9ff;
         }
         .search-container {
             margin-top: 100px;
             text-align: center;
         }
-        .search-container input {
+        .search-container input, .search-container button {
             padding: 10px;
             font-size: 18px;
-            width: 300px;
-            border: none;
-            border-radius: 5px;
         }
         .search-container button {
-            padding: 10px 20px;
-            font-size: 18px;
+            margin-left: 10px;
             background-color: #0984e3;
-            border: none;
             color: white;
             border-radius: 5px;
             cursor: pointer;
-            margin-left: 10px;
-        }
-        .search-container button:hover {
-            background-color: #74b9ff;
         }
     </style>
 </head>
 <body>
     <header>
         <img src="Screenshot 2024-12-25 181915.png" alt="PCS Infragold Logo" class="logo">
-        <nav>
-            <a href="#" onclick="viewInventory()">Inventory</a>
-        </nav>
+        <button class="inventory-btn" onclick="openInventory()">Inventory</button>
     </header>
     <div class="search-container">
         <h1>Search Products</h1>
         <input type="text" id="categoryCode" placeholder="Enter Category Code">
         <button onclick="searchProduct()">Search</button>
+        <div id="productDetails" style="margin-top: 20px; display: none;">
+            <h2>Product Details</h2>
+            <p id="productInfo"></p>
+        </div>
     </div>
 
     <script>
-        function viewInventory() {
-            window.location.href = "all-items.html"; // Redirects to the inventory listing page
-        }
+        const sheetID = "YOUR_SHEET_ID"; // Replace with your Google Sheet ID
+        const apiKey = "YOUR_API_KEY"; // Replace with your Google API Key
+        const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${apiKey}`;
+        const sheetViewURL = `https://docs.google.com/spreadsheets/d/${sheetID}/edit`; // Direct link to your Google Sheet
+
+        let productData = {};
+
+        // Fetch data from Google Sheet
+        fetch(sheetURL)
+            .then(response => response.json())
+            .then(data => {
+                const rows = data.values; // Rows of data
+                rows.slice(1).forEach(row => {
+                    const [categoryCode, productName, price, location] = row;
+                    productData[categoryCode] = `Product: ${productName}, Price: ${price}, Location: ${location}`;
+                });
+                alert("Data loaded successfully!");
+            })
+            .catch(error => console.error("Error fetching data:", error));
 
         function searchProduct() {
             const categoryCode = document.getElementById("categoryCode").value;
-            if (categoryCode.trim() === "") {
-                alert("Please enter a category code.");
-                return;
+            const productInfo = productData[categoryCode];
+
+            if (productInfo) {
+                document.getElementById("productDetails").style.display = "block";
+                document.getElementById("productInfo").textContent = productInfo;
+            } else {
+                alert("Category code not found. Please try again.");
             }
-            // Pass the category code to the product details page via query string
-            window.location.href = `product-details.html?category=${categoryCode}`;
+        }
+
+        function openInventory() {
+            window.open(sheetViewURL, "_blank");
         }
     </script>
 </body>
