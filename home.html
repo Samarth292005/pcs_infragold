@@ -60,12 +60,12 @@
 <body>
     <header>
         <img src="logo.png" alt="PCS Infragold Logo" class="logo">
-        <button class="inventory-btn" onclick="openInventory()">Inventory</button>
+        <button id="inventoryBtn" class="inventory-btn">Inventory</button>
     </header>
     <div class="search-container">
         <h1>Search Products</h1>
-        <input type="text" id="CategoryCode" placeholder="Enter Category Code">
-        <button onclick="searchProduct()">Search</button>
+        <input type="text" id="categoryCode" placeholder="Enter Category Code">
+        <button id="searchBtn">Search</button>
         <div id="productDetails" style="margin-top: 20px; display: none;">
             <h2>Product Details</h2>
             <p id="productInfo"></p>
@@ -73,11 +73,11 @@
     </div>
 
     <script>
-        const sheetID = "1nqHi5yQRngx1SRuYZq6YlT6yJQCTH3J19DeOdSoJ9bk"; // Replace with your Google Sheet ID
+        const sheetID = "1nqHi5yQRngx1SRuYZq6YlT6yJQCTH3J19DeOdSoJ9bk"; // Sheet ID
         const apiKey = "YOUR_API_KEY"; // Replace with your Google API Key
         const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${apiKey}`;
         const sheetViewURL = `https://docs.google.com/spreadsheets/d/${sheetID}/edit`;
-</a>
+
         let productData = {};
 
         // Fetch data from Google Sheet
@@ -86,16 +86,21 @@
             .then(data => {
                 const rows = data.values; // Rows of data
                 rows.slice(1).forEach(row => {
-                    const [categoryCode, productName, price, location] = row;
-                    productData[categoryCode] = `Product: ${productName}, Price: ${price}, Location: ${location}`;
+                    const [CategoryCode, Price, Quantity, Location] = row;
+                    productData[CategoryCode] = `Price: ${Price}, Quantity: ${Quantity}, Location: ${Location}`;
                 });
-                alert("Data loaded successfully!");
+                console.log("Product Data Loaded:", productData); // Log loaded data
             })
             .catch(error => console.error("Error fetching data:", error));
 
+        // Search functionality
+        document.getElementById("searchBtn").addEventListener("click", searchProduct);
+
         function searchProduct() {
-            const categoryCode = document.getElementById("categoryCode").value;
-            const productInfo = productData[categoryCode];
+            const categoryCode = document.getElementById("categoryCode").value.trim();
+            console.log("Searching for CategoryCode:", categoryCode); // Log search input
+
+            const productInfo = productData[categoryCode]; // Use 'CategoryCode' key
 
             if (productInfo) {
                 document.getElementById("productDetails").style.display = "block";
@@ -105,9 +110,10 @@
             }
         }
 
-        function openInventory() {
+        // Inventory button functionality
+        document.getElementById("inventoryBtn").addEventListener("click", () => {
             window.open(sheetViewURL, "_blank");
-        }
+        });
     </script>
 </body>
 </html>
