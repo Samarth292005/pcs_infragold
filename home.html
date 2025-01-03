@@ -59,7 +59,7 @@
 </head>
 <body>
     <header>
-        <img src="Screenshot 2024-12-25 181915.png" alt="PCS Infragold Logo" class="logo">
+        <img src="logo.png" alt="PCS Infragold Logo" class="logo">
         <button class="inventory-btn" onclick="openInventory()">Inventory</button>
     </header>
     <div class="search-container">
@@ -73,11 +73,12 @@
     </div>
 
     <script>
-        const sheetID = "YOUR_SHEET_ID"; // Replace with your Google Sheet ID
+        const sheetID = "1nqHi5yQRngx1SRuYZq6YlT6yJQCTH3J19DeOdSoJ9bk"; // Replace with your Google Sheet ID
         const apiKey = "YOUR_API_KEY"; // Replace with your Google API Key
         const sheetURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${apiKey}`;
-        const sheetViewURL = `https://docs.google.com/spreadsheets/d/${sheetID}/edit`; // Direct link to your Google Sheet
-
+        const sheetViewURL = <a href="https://docs.google.com/spreadsheets/d/1nqHi5yQRngx1SRuYZq6YlT6yJQCTH3J19DeOdSoJ9bk/edit" target="_blank" class="inventory-btn">
+    Inventory
+</a>
         let productData = {};
 
         // Fetch data from Google Sheet
